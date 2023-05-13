@@ -1,4 +1,4 @@
-name: Execute Azure CLI commands
+name: Execute Azure CLI commands 
 
 on:
   push:
