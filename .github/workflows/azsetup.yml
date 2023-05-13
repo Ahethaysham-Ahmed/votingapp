@@ -2,7 +2,7 @@ name: Execute Azure CLI commands
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   execute-az:
