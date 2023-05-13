@@ -12,7 +12,7 @@ jobs:
     uses: Azure/AKS-Construction/.github/workflows/AKSC_Deploy.yml@0.9.14
     with:
       templateVersion: 0.9.14
-      rg: appdemogroup2
+      rg: appdemogroup3
       resourceName: xaapaks1
       templateParams: resourceName=xaapaks1 agentCount=1 upgradeChannel=stable AksPaidSkuForSLA=true agentCountMax=20 custom_vnet=true CreateNetworkSecurityGroups=true enable_aad=true AksDisableLocalAccounts=true enableAzureRBAC=true adminPrincipalId=_USER_OBJECT_ID_ registries_sku=Premium acrPushRolePrincipalId=_USER_OBJECT_ID_ omsagent=true retentionInDays=30 networkPolicy=azure azurepolicy=audit authorizedIPRanges=["10.10.0.0/24"] ingressApplicationGateway=true appGWcount=0 appGWsku=WAF_v2 appGWmaxCount=10 appgwKVIntegration=true keyVaultAksCSI=true keyVaultCreate=true keyVaultOfficerRolePrincipalId=_USER_OBJECT_ID_
     secrets:
