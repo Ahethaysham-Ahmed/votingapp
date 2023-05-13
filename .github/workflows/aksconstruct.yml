@@ -10,6 +10,7 @@ permissions:
 jobs:
   deploy_aks:
     runs-on: ubuntu-latest
+    container: mcr.microsoft.com/azure-cli
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
