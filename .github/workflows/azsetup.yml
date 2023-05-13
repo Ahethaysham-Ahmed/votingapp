@@ -2,7 +2,7 @@ name: Setup Azure resources
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   setup-azure:
@@ -25,7 +25,7 @@ jobs:
           az rest --method POST --uri "https://graph.microsoft.com/beta/applications/${app[1]}/federatedIdentityCredentials" --body "{\"name\":\"azure-voting-app-redis-main-gh\",\"issuer\":\"https://token.actions.githubusercontent.com\",\"subject\":\"repo:zaracheema/azure-voting-app-redis:ref:refs/heads/main\",\"description\":\"Access to branch main\",\"audiences\":[\"api://AzureADTokenExchange\"]}"
       - name: Set GitHub repository secrets
         run: |
-          gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis AZURE_CLIENT_ID -b ${app[0]}
-          gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis AZURE_TENANT_ID -b $(az account show --query tenantId -o tsv)
-          gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis AZURE_SUBSCRIPTION_ID -b $subId
-          gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis USER_OBJECT_ID -b $spId
+          gh secret set --repo https://github.com/Ahethaysham-Ahmed/azure-voting-app-redis AZURE_CLIENT_ID -b ${app[0]}
+          gh secret set --repo https://github.com/Ahethaysham-Ahmed/azure-voting-app-redis AZURE_TENANT_ID -b $(az account show --query tenantId -o tsv)
+          gh secret set --repo https://github.com/Ahethaysham-Ahmed/azure-voting-app-redis AZURE_SUBSCRIPTION_ID -b $subId
+          gh secret set --repo https://github.com/Ahethaysham-Ahmed/azure-voting-app-redis USER_OBJECT_ID -b $spId
