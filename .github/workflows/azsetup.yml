@@ -1,0 +1,37 @@
+name: Execute Azure CLI commands
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  execute-az:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Azure CLI
+        uses: azure/setup-azure-cli@v1
+      - name: Login to Azure
+        run: az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+      - name: Execute Azure CLI commands
+        run: |
+   # Create resource group, and an identity with contributor access that github can federate
+az group create -l WestEurope -n appdemogroup2
+
+app=($(az ad app create --display-name azure-voting-app-redis --query "[appId,id]" -o tsv | tr ' ' "\n"))
+spId=$(az ad sp create --id ${app[0]} --query id -o tsv )
+subId=$(az account show --query id -o tsv)
+
+az role assignment create --role owner --assignee-object-id  $spId --assignee-principal-type ServicePrincipal --scope /subscriptions/$subId/resourceGroups/appdemogroup2
+
+
+# Create a new federated identity credential
+az rest --method POST --uri "https://graph.microsoft.com/beta/applications/${app[1]}/federatedIdentityCredentials" --body "{\"name\":\"azure-voting-app-redis-main-gh\",\"issuer\":\"https://token.actions.githubusercontent.com\",\"subject\":\"repo:zaracheema/azure-voting-app-redis:ref:refs/heads/main\",\"description\":\"Access to branch main\",\"audiences\":[\"api://AzureADTokenExchange\"]}"
+
+# Set Secrets
+gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis AZURE_CLIENT_ID -b ${app[0]}
+gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis AZURE_TENANT_ID -b $(az account show --query tenantId -o tsv)
+gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis AZURE_SUBSCRIPTION_ID -b $subId
+gh secret set --repo https://github.com/zaracheema/azure-voting-app-redis USER_OBJECT_ID -b $spId
+
