@@ -18,12 +18,35 @@ jobs:
         with:
           install-cli: true
       - name: Deploy AKS cluster
-        uses: Azure/AKS-Construction/.github/workflows/AKSC_Deploy.yml@0.9.14
+        uses: Azure/AKS-Construction@0.9.14
         with:
-          templateVersion: 0.9.14
-          rg: appdemogroup2
-          resourceName: xaapaks1
-          templateParams: resourceName=xaapaks1 agentCount=1 upgradeChannel=stable AksPaidSkuForSLA=true agentCountMax=20 custom_vnet=true CreateNetworkSecurityGroups=true enable_aad=true AksDisableLocalAccounts=true enableAzureRBAC=true adminPrincipalId=${{ secrets.USER_OBJECT_ID }} registries_sku=Premium acrPushRolePrincipalId=${{ secrets.USER_OBJECT_ID }} omsagent=true retentionInDays=30 networkPolicy=azure azurepolicy=audit authorizedIPRanges=["10.10.0.0/24"] ingressApplicationGateway=true appGWcount=0 appGWsku=WAF_v2 appGWmaxCount=10 appgwKVIntegration=true keyVaultAksCSI=true keyVaultCreate=true keyVaultOfficerRolePrincipalId=${{ secrets.USER_OBJECT_ID }}
+          resource-group: appdemogroup2
+          cluster-name: xaapaks1
+          agent-count: 1
+          upgrade-channel: stable
+          sku-tier: Paid
+          max-agent-count: 20
+          custom-vnet: true
+          create-network-security-groups: true
+          enable-aad: true
+          disable-local-accounts: true
+          enable-azure-rbac: true
+          admin-principal-id: ${{ secrets.USER_OBJECT_ID }}
+          registries-sku: Premium
+          acr-push-role-principal-id: ${{ secrets.USER_OBJECT_ID }}
+          omsagent: true
+          retention-in-days: 30
+          network-policy: azure
+          azurepolicy: audit
+          authorized-ip-ranges: '["10.10.0.0/24"]'
+          ingress-application-gateway: true
+          appgw-count: 0
+          appgw-sku: WAF_v2
+          appgw-max-count: 10
+          appgw-kv-integration: true
+          keyvault-aks-csi: true
+          keyvault-create: true
+          keyvault-officer-role-principal-id: ${{ secrets.USER_OBJECT_ID }}
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
