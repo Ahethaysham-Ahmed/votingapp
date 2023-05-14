@@ -37,7 +37,7 @@ jobs:
           kubelogin
       - name: Authenticate with AKS using kubelogin
         run: |
-          kubelogin --env
+          kubelogin convert-kubeconfig -l azurecli
           kubectl get nodes
       - name: Deploy to AKS
         id: deploy-aks
