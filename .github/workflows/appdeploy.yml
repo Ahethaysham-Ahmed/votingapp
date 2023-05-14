@@ -34,7 +34,7 @@ jobs:
           unzip kubelogin-linux-amd64.zip -d /usr/local/bin
           pwd
           chmod +x /usr/local/bin/bin/linux_amd64/kubelogin
-          sudo mv /usr/local/bin/bin/linux_amd64/kubelogin /usr/local/bin/
+          mv /usr/local/bin/bin/linux_amd64/kubelogin /usr/local/bin/
       - name: Authenticate with AKS using kubelogin
         run: |
           kubelogin --env ${{ secrets.AZURE_CLOUD_NAME }} --identity-provider azure-cli
