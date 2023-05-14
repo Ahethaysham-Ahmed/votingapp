@@ -37,7 +37,9 @@ jobs:
           mv /usr/local/bin/bin/linux_amd64/kubelogin /usr/local/bin/
       - name: Authenticate with AKS using kubelogin
         run: |
-          kubelogin --env ${{ secrets.AZURE_CLOUD_NAME }} --identity-provider azure-cli
+          az aks get-credentials -g appdemogroup3 -n aks-xaapaks2
+          kubelogin convert-kubeconfig -l azurecli
+          kubectl get nodes
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
