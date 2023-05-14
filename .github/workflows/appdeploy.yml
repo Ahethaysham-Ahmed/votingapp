@@ -31,8 +31,8 @@ jobs:
       - name: Install kubelogin
         run: |
           curl -LO https://github.com/Azure/kubelogin/releases/download/v0.0.23/kubelogin-linux-amd64.zip
-          apt install unzip 
           unzip kubelogin-linux-amd64.zip -d /usr/local/bin
+          pwd
           chmod +x kubelogin
           sudo mv kubelogin /usr/local/bin/
       - name: Authenticate with AKS using kubelogin
