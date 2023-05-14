@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/azure-cli
     steps:
-      - name: Login to Azure
+      - name: Log in to Azure
         run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
       - name: Checkout source code 
         uses: actions/checkout@v3
@@ -21,27 +21,28 @@ jobs:
           tenant: ${{ secrets.tenant }}
           registry: ${{ secrets.registry }}
           repository: ${{ secrets.repository }}
-          image:  azure-vote-front
+          image: azure-vote-front
           folder: azure-vote
           branch: master
           tag: ${{ github.sha }}
-      - name: Login to Azure
-        run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
-      - name: Set AKS context
-        id: set-context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: '${{ secrets.resource_group }}' 
-          cluster-name: '${{ secrets.cluster_name }}'
-      - name: Setup kubectl
-        id: install-kubectl
-        uses: azure/setup-kubectl@v3
+      - name: Log in to Azure Kubernetes Service
+        run: |
+          az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }}
+      - name: Install kubelogin
+        run: |
+          curl -LO https://github.com/Azure/kubelogin/releases/download/v0.0.23/kubelogin-linux-amd64.zip
+          unzip kubelogin-linux-amd64.zip
+          chmod +x kubelogin
+          sudo mv kubelogin /usr/local/bin/
+      - name: Authenticate with AKS using kubelogin
+        run: |
+          kubelogin --env ${{ secrets.AZURE_CLOUD_NAME }} --identity-provider azure-cli
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
-          namespace: 'default'
+          namespace: default
           manifests: |
-             azure-vote-all-in-one-redis.yaml
+            azure-vote-all-in-one-redis.yaml
           images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
           pull-images: false
