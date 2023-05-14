@@ -32,8 +32,8 @@ jobs:
         run: |
           curl -LO https://github.com/Azure/kubelogin/releases/download/v0.0.23/kubelogin-linux-amd64.zip
           unzip kubelogin-linux-amd64.zip -d /usr/local/bin
-          chmod +x /usr/local/bin/linux_amd64/kubelogin
-          mv /usr/local/bin/linux_amd64/kubelogin /usr/local/bin/
+          chmod +x /usr/local/bin/bin/linux_amd64/kubelogin
+          mv /usr/local/bin/bin/linux_amd64/kubelogin /usr/local/bin/
       - name: Authenticate with AKS using kubelogin
         run: |
           az aks get-credentials -g appdemogroup3 -n aks-xaapaks2
