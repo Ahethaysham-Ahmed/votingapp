@@ -34,14 +34,14 @@ jobs:
           unzip kubelogin-linux-amd64.zip -d /usr/local/bin
           chmod +x /usr/local/bin/bin/linux_amd64/kubelogin
           mv /usr/local/bin/bin/linux_amd64/kubelogin /usr/local/bin/
-      - name: Install kubectl
-        run: |
-          apt install -y kubectl
       - name: Authenticate with AKS using kubelogin
+        uses: azure/setup-kubectl@v3
         run: |
           az aks get-credentials -g appdemogroup3 -n aks-xaapaks2
           kubelogin convert-kubeconfig -l azurecli
           kubectl get nodes
+          
+  id: install
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
