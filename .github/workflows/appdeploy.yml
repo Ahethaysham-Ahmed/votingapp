@@ -40,7 +40,17 @@ jobs:
           kubelogin
       - name: Authenticate with AKS using kubelogin
         run: |
-          kubelogin convert-kubeconfig -l azurecli
+          kubelogin convert-kubeconfig -l azurecli  
+          
+          
+  # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.resource_group }}
+          cluster-name: ${{ secrets.cluster_name }}
+          admin: 'false'
+          use-kubelogin: 'true'
           
       - name: validate aks config
         run: |
