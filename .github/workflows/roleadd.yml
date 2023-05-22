@@ -40,5 +40,15 @@ jobs:
           cluster-name: '${{ secrets.cluster_name }}'
 
       - name: Deploy to AKS
-        run: |
-          kubectl apply -f cluster-role-binding.yaml
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: default
+          manifests: |
+            cluster-role-binding.yml
+#           images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
+#           pull-images: false
+          
+#       - name: Deploy to AKS
+#         run: |
+#           kubectl apply -f cluster-role-binding.yaml
