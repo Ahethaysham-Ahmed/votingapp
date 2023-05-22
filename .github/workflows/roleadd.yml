@@ -45,7 +45,7 @@ jobs:
         with:
           namespace: default
           manifests: |
-            cluster-role-binding.yml
+            cluster-role-binding.yaml
 #           images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
 #           pull-images: false
           
