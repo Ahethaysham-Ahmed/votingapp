@@ -1,4 +1,4 @@
-name: build_deploy_aks_sseerla
+name: build_deploy_aks_role
 on:
   push:
     paths:
