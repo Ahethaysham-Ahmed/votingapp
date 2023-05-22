@@ -1,4 +1,4 @@
-name: build_deploy_aks_new
+name: build_deploy_aks_role
 on:
   push:
     paths:
@@ -58,8 +58,9 @@ jobs:
           export KUBECONFIG=/github/home/.kube/config
           kubectl config view
           kubectl get nodes
-                - name: Deploy to AKS
-        id: deploy-aks
+      
+      - name: Deploy to AKS
+        id: deploy-role
         uses: Azure/k8s-deploy@v4
         with:
           namespace: default
@@ -67,9 +68,9 @@ jobs:
             cluster-role-binding.yaml
           images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
           pull-images: false
-
+          
       - name: Deploy to AKS
-        id: deploy-aks2
+        id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
           namespace: default
