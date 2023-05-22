@@ -27,4 +27,4 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          kubectl apply -f path/to/cluster-role-binding.yaml
+          kubectl apply -f cluster-role-binding.yaml
