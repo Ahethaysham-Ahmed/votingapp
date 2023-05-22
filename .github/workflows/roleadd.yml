@@ -1,5 +1,4 @@
-
-name: build_deploy_aks_role
+name: build_deploy_aks_sseerla
 on:
   push:
     paths:
@@ -55,23 +54,16 @@ jobs:
           
       - name: validate aks config
         run: |
+          az account show
           export KUBECONFIG=/github/home/.kube/config
           kubectl config view
           kubectl get nodes
-          az account show
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
           namespace: default
           manifests: |
-           cluster-role-binding.yaml
-#           images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
-#           pull-images: false
-#             cluster-role-binding.yaml
-#           images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
-#           pull-images: false
-          
-#       - name: Deploy to AKS
-#         run: |
-#           kubectl apply -f cluster-role-binding.yaml
+            azure-vote-all-in-one-redis.yaml
+          images: '${{ secrets.registry }}.azurecr.io/${{ secrets.repository }}/azure-vote-front:${{ github.sha }}'
+          pull-images: false
