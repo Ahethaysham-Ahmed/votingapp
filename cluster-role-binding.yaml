@@ -10,8 +10,8 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- kind: User
-  name: ahethaysham.ahmed@mphasis.com  # Replace with the desired username or service account
+# - kind: User
+#   name: ahethaysham.ahmed@mphasis.com  # Replace with the desired username or service account
 - kind: ServiceAccount
   name: default # Replace with the name of your ServiceAccount
   namespace: default # Replace with the namespace where the ServiceAccount resides
