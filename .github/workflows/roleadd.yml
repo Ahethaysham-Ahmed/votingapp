@@ -69,7 +69,7 @@ jobs:
           pull-images: false
 #             azure-vote-all-in-one-redis.yaml
 
-      - name: Deploy to AKS
+      - name: Deploy to AKS2
         id: deploy-aks2
         uses: Azure/k8s-deploy@v4
         with:
