@@ -1,0 +1,33 @@
+name: Deploy to AKS
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure AKS Set Context
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          resourceGroupName: <resource-group-name>
+          clusterName: <aks-cluster-name>
+
+      - name: Deploy to AKS
+        run: |
+          kubectl apply -f path/to/cluster-role-binding.yaml
