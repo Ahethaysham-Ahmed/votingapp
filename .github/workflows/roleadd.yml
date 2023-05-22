@@ -18,7 +18,21 @@ jobs:
       - name: Install kubectl
         run: |
          az aks install-cli
-         
+
+      - name: Log in to Azure Kubernetes Service
+        run: |
+          az aks get-credentials --resource-group ${{ secrets.resource_group }} --name ${{ secrets.cluster_name }}
+      - name: Install kubelogin
+        run: |
+          curl -LO https://github.com/Azure/kubelogin/releases/download/v0.0.23/kubelogin-linux-amd64.zip
+          unzip kubelogin-linux-amd64.zip -d /usr/local/bin
+          chmod +x /usr/local/bin/bin/linux_amd64/kubelogin
+          mv /usr/local/bin/bin/linux_amd64/kubelogin /usr/local/bin/
+          kubelogin
+      - name: Authenticate with AKS using kubelogin
+        run: |
+          kubelogin convert-kubeconfig -l azurecli
+          
       - name: Azure AKS Set Context
         uses: azure/aks-set-context@v3
         with:
